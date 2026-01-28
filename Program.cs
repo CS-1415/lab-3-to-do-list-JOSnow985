@@ -11,10 +11,39 @@ taskList.Add(new Task(taskList.Count, "TestTitle3", "TestDesc3", false));
 
 string tableHeader = "Jaden's To Do List App\n\n    | ID  | Task\n-------------------------------------------";
 
-// Writing the tasks to the console
-displayTaskList(tableHeader, taskList);
-Console.WriteLine("\nPress \"+\" to add a task. Press \"x\" to toggle whether or not the task is complete. Press \"i\" to view a task's information.");
+while (true)
+{
+    Console.Clear();
+    // Writing the tasks to the console
+    displayTaskList(tableHeader, taskList);
+    Console.WriteLine("\nPress \"+\" to add a task. Press \"x\" to toggle whether or not the task is complete. Press \"i\" to view a task's information.");
 
+    switch (Console.ReadKey(true).KeyChar)
+    {
+        // "+" for adding a list item
+        case '=':
+        case '+':
+            Console.WriteLine("Add List Item");
+            break;
+        // "x" for toggling a task's completion
+        case 'x':
+        case 'X':
+            Console.WriteLine("Toggle List Item Completion");
+            break;
+        // "i" for information on a task
+        case 'i':
+        case 'I':
+            Console.Write("\nPlease enter the ID of the task you want information on: ");
+            int requestedID;
+            // Make sure we get a good ID before continuing
+            while (!int.TryParse(Console.ReadLine(), out requestedID))
+                Console.Write("Please enter a valid task ID number: ");
+            DisplayTaskInfo(tableHeader, requestedID, taskList);
+            break;
+        default:
+            break;
+    }
+}
 
 
 // Methods

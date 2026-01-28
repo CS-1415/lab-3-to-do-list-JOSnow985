@@ -5,12 +5,13 @@ using System.Text;
 List<Task> taskList = [];
 
 // Adding some example ones for now
-taskList.Add(new Task(taskList.Count, "TestTitle1", "TestDesc1", false));
-taskList.Add(new Task(taskList.Count, "TestTitle2", "TestDesc2", false));
-taskList.Add(new Task(taskList.Count, "TestTitle3", "TestDesc3", false));
+taskList.Add(new Task(taskList.Count, "Get a new Task", "Decide on a new task to put on this list.", true));
+taskList.Add(new Task(taskList.Count, "Erase old Task", "Figure out how to erase an old task.", false));
+taskList.Add(new Task(taskList.Count, "Don't complete this task", "Leave this task uncompleted, successfully.", true));
 
-string tableHeader = "Jaden's To Do List App\n\n    | ID  | Task\n-------------------------------------------";
+string tableHeader = "Jaden's To Do List App\n\n    | ID  | Task\n---------------------------------------";
 
+// Main menu loop
 while (true)
 {
     Console.Clear();
@@ -18,27 +19,25 @@ while (true)
     displayTaskList(tableHeader, taskList);
     Console.WriteLine("\nPress \"+\" to add a task. Press \"x\" to toggle whether or not the task is complete. Press \"i\" to view a task's information.");
 
+    // switch based on pressed key
     switch (Console.ReadKey(true).KeyChar)
     {
         // "+" for adding a list item
         case '=':
         case '+':
-            Console.WriteLine("Add List Item");
+            AddNewTask(taskList);
             break;
         // "x" for toggling a task's completion
         case 'x':
         case 'X':
-            Console.WriteLine("Toggle List Item Completion");
+            Console.Write("\nPlease enter the ID of the task you want to toggle completion for: ");
+            TaskOperation(tableHeader, false, taskList);
             break;
         // "i" for information on a task
         case 'i':
         case 'I':
             Console.Write("\nPlease enter the ID of the task you want information on: ");
-            int requestedID;
-            // Make sure we get a good ID before continuing
-            while (!int.TryParse(Console.ReadLine(), out requestedID))
-                Console.Write("Please enter a valid task ID number: ");
-            DisplayTaskInfo(tableHeader, requestedID, taskList);
+            TaskOperation(tableHeader, true, taskList);
             break;
         default:
             break;
@@ -54,6 +53,50 @@ static void displayTaskList(string tableHeader, List<Task> taskList)
     {
         task.DisplayTask();
     }
+}
+
+// Takes validated user input to add a Task to a passed list
+static void AddNewTask(List<Task> taskList)
+{
+    string newTitle = "";
+    bool validString = false;
+    while (!validString)
+    {
+        Console.Clear();
+        Console.WriteLine("What should the new task's title be?");
+        string inputString = Console.ReadLine()!;
+        if (!string.IsNullOrEmpty(inputString))
+        {
+            newTitle = inputString;
+            validString = true;
+        }
+        else
+        {
+            Console.WriteLine("Sorry, but that's not a valid title, try again?\nPress any key to try again.");
+            Console.ReadKey(true);
+        }
+    }
+
+    string newDescription = "";
+    validString = false;
+    while (!validString)
+    {
+        Console.Clear();
+        Console.WriteLine("What should the new task's description be?");
+        string inputString = Console.ReadLine()!;
+        if (!string.IsNullOrEmpty(inputString))
+        {
+            newDescription = inputString;
+            validString = true;
+        }
+        else
+        {
+            Console.WriteLine("Sorry, but that's not a valid description, try again?\nPress any key to try again.");
+            Console.ReadKey(true);
+        }
+    }
+
+    taskList.Add(new Task(taskList.Count, newTitle, newDescription, false));
 }
 
 // Searches passed list for a Task with a matching ID. Returns a bool with a possibly null out if the ID wasn't found.
@@ -72,17 +115,32 @@ static bool TryFindTaskbyID(int targetID, List<Task> taskList, out Task? foundTa
     return false;
 }
 
-// Clears current view and displays header, then calls TryFind to get the requested task, displays it, then displays the description.
-static void DisplayTaskInfo(string tableHeader, int targetID, List<Task> taskList)
+// Method for collecting a valid input ID, searching for the task associated with that ID
+// Either prints the 
+static void TaskOperation(string tableHeader, bool wantsDescription, List<Task> taskList)
 {
-    Console.Clear();
-    Console.WriteLine(tableHeader);
+    int targetID;
+    // Make sure we get a good ID before continuing
+    while (!int.TryParse(Console.ReadLine(), out targetID))
+        Console.Write("Please enter a valid task ID number: ");
 
     // Displays the task and description or tells the user the ID wasn't found.
     if (TryFindTaskbyID(targetID, taskList, out Task? task) && task != null)
     {
-        task.DisplayTask();
-        Console.WriteLine($"\n{task.TaskDescription}\n");
+        // If we're after the Description of the task we've found, display the task and the description
+        if (wantsDescription)
+        {
+            Console.Clear();
+            Console.WriteLine(tableHeader);
+            task.DisplayTask();
+            Console.WriteLine($"\n{task.TaskDescription}\n");
+        }
+        // If we're not after the description, we're trying to flip it's completion status
+        else
+        {
+            task.MarkAsCompleted();
+            return; // Skips the required key to progress below
+        }
     }
     else
     {

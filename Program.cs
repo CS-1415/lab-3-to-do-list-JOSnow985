@@ -11,11 +11,20 @@ taskList.Add(new Task(taskList.Count, "TestTitle1", "TestDesc1", false));
 taskList.Add(new Task(taskList.Count, "TestTitle2", "TestDesc2", false));
 taskList.Add(new Task(taskList.Count, "TestTitle3", "TestDesc3", false));
 
+string tableHeader = "    | ID  | Task";
+
 // Writing the tasks to the console
-Console.WriteLine("    | ID  | Task");
-foreach (Task item in taskList)
+displayTaskList(ref tableHeader, ref taskList);
+
+
+// Methods
+static void displayTaskList(ref string tableHeader, ref List<Task> taskList)
 {
-    item.DisplayTask();
+    Console.WriteLine(tableHeader);
+    foreach (Task task in taskList)
+    {
+        task.DisplayTask();
+    }
 }
 
 // Class

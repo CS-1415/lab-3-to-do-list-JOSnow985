@@ -15,7 +15,7 @@ string tableHeader = "    | ID  | Task";
 
 // Writing the tasks to the console
 displayTaskList(ref tableHeader, ref taskList);
-
+Console.WriteLine("\nPress \"+\" to add a task. Press \"x\" to toggle whether or not the task is complete. Press \"i\" to view a task's information.");
 
 // Methods
 static void displayTaskList(ref string tableHeader, ref List<Task> taskList)

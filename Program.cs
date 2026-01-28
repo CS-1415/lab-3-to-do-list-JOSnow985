@@ -1,8 +1,6 @@
 ﻿// Jaden Olvera, 1/27/26, Lab 3 - ToDo List
 using System.Text;
 
-Console.WriteLine("A ToDo List app!");
-
 // List of tasks we'll be working on
 List<Task> taskList = [];
 
@@ -11,14 +9,16 @@ taskList.Add(new Task(taskList.Count, "TestTitle1", "TestDesc1", false));
 taskList.Add(new Task(taskList.Count, "TestTitle2", "TestDesc2", false));
 taskList.Add(new Task(taskList.Count, "TestTitle3", "TestDesc3", false));
 
-string tableHeader = "    | ID  | Task";
+string tableHeader = "Jaden's To Do List App\n\n    | ID  | Task\n-------------------------------------------";
 
 // Writing the tasks to the console
-displayTaskList(ref tableHeader, ref taskList);
+displayTaskList(tableHeader, taskList);
 Console.WriteLine("\nPress \"+\" to add a task. Press \"x\" to toggle whether or not the task is complete. Press \"i\" to view a task's information.");
 
+
+
 // Methods
-static void displayTaskList(ref string tableHeader, ref List<Task> taskList)
+static void displayTaskList(string tableHeader, List<Task> taskList)
 {
     Console.WriteLine(tableHeader);
     foreach (Task task in taskList)
@@ -27,14 +27,40 @@ static void displayTaskList(ref string tableHeader, ref List<Task> taskList)
     }
 }
 
-static void displayTaskInfo(ref List<Task> taskList)
+// Searches passed list for a Task with a matching ID. Returns a bool with a possibly null out if the ID wasn't found.
+static bool TryFindTaskbyID(int targetID, List<Task> taskList, out Task? foundTask)
 {
-    Console.WriteLine("taskInfo");
+    // Iterates through the list looking for the Task with the targetID
+    foreach (Task task in taskList)
+    {
+        if (task.TaskID == targetID)
+        {
+            foundTask = task;
+            return true;
+        }
+    }
+    foundTask = null;
+    return false;
 }
 
-static Task findTaskbyID(ref List<Task> taskList)
+// Clears current view and displays header, then calls TryFind to get the requested task, displays it, then displays the description.
+static void DisplayTaskInfo(string tableHeader, int targetID, List<Task> taskList)
 {
-    return new Task(0, "", "", false);
+    Console.Clear();
+    Console.WriteLine(tableHeader);
+
+    // Displays the task and description or tells the user the ID wasn't found.
+    if (TryFindTaskbyID(targetID, taskList, out Task? task) && task != null)
+    {
+        task.DisplayTask();
+        Console.WriteLine($"\n{task.TaskDescription}\n");
+    }
+    else
+    {
+        Console.WriteLine("\nNo task with that ID found.\n");
+    }
+    Console.WriteLine("\nPress any key to return to the task list.");
+    Console.ReadKey();
 }
 
 // Class

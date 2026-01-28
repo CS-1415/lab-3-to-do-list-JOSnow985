@@ -8,4 +8,26 @@ class Task
     private string _taskTitle = "";
     private string _taskDescription = "";
     private bool _taskComplete;
+
+    // Getters and Setters
+    public int TaskID
+    {
+        get => _taskID;
+        set => _taskID = value;
+    }
+    public string TaskTitle
+    {
+        get => _taskTitle;
+        set => _taskTitle = value;
+    }
+    public string TaskDescription
+    {
+        get => _taskDescription;
+        set => _taskDescription = value;
+    }
+    public bool TaskComplete
+    {
+        get => _taskComplete;
+        set => _taskComplete = value;
+    }
 }

@@ -27,6 +27,16 @@ static void displayTaskList(ref string tableHeader, ref List<Task> taskList)
     }
 }
 
+static void displayTaskInfo(ref List<Task> taskList)
+{
+    Console.WriteLine("taskInfo");
+}
+
+static Task findTaskbyID(ref List<Task> taskList)
+{
+    return new Task(0, "", "", false);
+}
+
 // Class
 class Task(int taskID, string taskTitle, string taskDescription, bool taskComplete)
 {

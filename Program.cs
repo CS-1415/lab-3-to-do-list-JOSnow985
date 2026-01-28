@@ -30,4 +30,21 @@ class Task
         get => _taskComplete;
         set => _taskComplete = value;
     }
+
+    // Methods
+    // Displays the completion status, ID, and task name
+    public void DisplayTask()
+    {
+        Console.Write("stub");
+    }
+    // Displays the task description
+    public void DisplayDescription()
+    {
+        Console.Write("stub");
+    }
+    // Toggles completion status
+    public void MarkAsCompleted()
+    {
+        Console.Write("stub");
+    }
 }

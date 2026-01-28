@@ -3,19 +3,29 @@ using System.Text;
 
 Console.WriteLine("A ToDo List app!");
 
-Task test = new(0, true);
-test.DisplayTask();
-test.DisplayDescription();
-test.MarkAsCompleted();
-test.DisplayTask();
+// List of tasks we'll be working on
+List<Task> taskList = [];
 
-class Task
+// Adding some example ones for now
+taskList.Add(new Task(taskList.Count, "TestTitle1", "TestDesc1", false));
+taskList.Add(new Task(taskList.Count, "TestTitle2", "TestDesc2", false));
+taskList.Add(new Task(taskList.Count, "TestTitle3", "TestDesc3", false));
+
+// Writing the tasks to the console
+Console.WriteLine("    | ID  | Task");
+foreach (Task item in taskList)
 {
-    // Data members for a Task
-    private int _taskID;
-    private string _taskTitle = "Improve ToDo List Code";
-    private string _taskDescription = "Make the code better!";
-    private bool _taskComplete;
+    item.DisplayTask();
+}
+
+// Class
+class Task(int taskID, string taskTitle, string taskDescription, bool taskComplete)
+{
+    // Data members for a Task, default strings for non-nullable fields
+    private int _taskID = taskID;
+    private string _taskTitle = taskTitle;
+    private string _taskDescription = taskDescription;
+    private bool _taskComplete = taskComplete;
 
     // Getters and Setters
     public int TaskID
@@ -39,13 +49,6 @@ class Task
         set => _taskComplete = value;
     }
 
-    // Constructor
-    public Task(int taskID, bool taskComplete)
-    {
-        _taskID = taskID;
-        _taskComplete = taskComplete;
-    }
-
     // Methods
     // Writes the completion status, ID, and task name to a line in the console
     public void DisplayTask()
@@ -67,11 +70,13 @@ class Task
 
         Console.WriteLine(taskString.ToString());
     }
+
     // Displays the task description
     public void DisplayDescription()
     {
         Console.WriteLine(_taskDescription);
     }
+
     // Toggles completion status
     public void MarkAsCompleted()
     {

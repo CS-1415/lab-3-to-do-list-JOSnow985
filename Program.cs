@@ -5,9 +5,9 @@ using System.Text;
 List<Task> taskList = [];
 
 // Adding some example ones for now
-taskList.Add(new Task(taskList.Count, "Get a new Task", "Decide on a new task to put on this list.", true));
-taskList.Add(new Task(taskList.Count, "Erase old Task", "Figure out how to erase an old task.", false));
-taskList.Add(new Task(taskList.Count, "Don't complete this task", "Leave this task uncompleted, successfully.", true));
+taskList.Add(new Task(taskList.Count + 1, "Get a new Task", "Decide on a new task to put on this list."));
+taskList.Add(new Task(taskList.Count + 1, "Erase old Task", "Figure out how to erase an old task."));
+taskList.Add(new Task(taskList.Count + 1, "Don't complete this task", "Leave this task uncompleted, successfully."));
 
 string tableHeader = "Jaden's To Do List App\n\n    | ID  | Task\n---------------------------------------";
 
@@ -96,7 +96,7 @@ static void AddNewTask(List<Task> taskList)
         }
     }
 
-    taskList.Add(new Task(taskList.Count, newTitle, newDescription, false));
+    taskList.Add(new Task(taskList.Count + 1, newTitle, newDescription));
 }
 
 // Searches passed list for a Task with a matching ID. Returns a bool with a possibly null out if the ID wasn't found.
@@ -116,7 +116,7 @@ static bool TryFindTaskbyID(int targetID, List<Task> taskList, out Task? foundTa
 }
 
 // Method for collecting a valid input ID, searching for the task associated with that ID
-// Either prints the 
+// Either writes the task and it's description or toggles it's completion status
 static void TaskOperation(string tableHeader, bool wantsDescription, List<Task> taskList)
 {
     int targetID;
@@ -151,13 +151,13 @@ static void TaskOperation(string tableHeader, bool wantsDescription, List<Task> 
 }
 
 // Class
-class Task(int taskID, string taskTitle, string taskDescription, bool taskComplete)
+public class Task
 {
     // Data members for a Task, default strings for non-nullable fields
-    private int _taskID = taskID;
-    private string _taskTitle = taskTitle;
-    private string _taskDescription = taskDescription;
-    private bool _taskComplete = taskComplete;
+    private int _taskID;
+    private string _taskTitle = "new task title";
+    private string _taskDescription = "new task description";
+    private bool _taskComplete = false;
 
     // Getters and Setters
     public int TaskID
@@ -179,6 +179,16 @@ class Task(int taskID, string taskTitle, string taskDescription, bool taskComple
     {
         get => _taskComplete;
         set => _taskComplete = value;
+    }
+
+    // Constructors
+    public Task() {}
+    public Task(int taskID, string title, string description)
+    {
+        _taskID = taskID;
+        _taskTitle = title;
+        _taskDescription = description;
+        _taskComplete = false;
     }
 
     // Methods
